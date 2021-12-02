@@ -1,26 +1,36 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import posts from './posts'
 
 
 // Modifica el componente App para implmentar la funcionalidad requerida
 
-class App extends Component {
-  render() {
-    return (
+const App = () =>{
+const [type,setType]=useState('')
+  return (
       <div>
         <div className="filter">
-          <input type="text" placeholder="Ingresa el término de búsqueda" />
+          <input type="text" placeholder="Ingresa el término de búsqueda"  value={type}onChange={(e)=>setType(e.target.value)} />
         </div>
+
         <ul>
-          <li>
-            <a href={posts[0].url}><img src={posts[0].image } /></a>
-            <p>{ posts[0].title }</p>
-          </li>
+          {posts
+          .filter(({title})=>title.toLowerCase().includes(type.toLowerCase()))
+          .map(({image,title,url},index)=>
+            <li key={index+1}>
+              <a href={url}>
+                <img src={image} alt={title} />
+              </a>
+              <p>
+                {title}
+              </p>
+            </li>
+          )}
         </ul>
       </div>
     )
-  }
 }
+
+
 
 
 export default App
